@@ -1,7 +1,6 @@
 package com.example.mycomposetodo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -18,6 +17,7 @@ import com.example.mycomposetodo.ui.theme.MyComposeTodoTheme
 
 
 class MainActivity : ComponentActivity() {
+    private val viewModel = MainViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,54 +26,23 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    MainTodoView(viewModel)
                 }
             }
         }
     }
 }
 
-val todoList = mutableStateListOf(
-    TodoItem(0, "My First Task"),
-    TodoItem(1, "My Second Task", true),
-    TodoItem(2, "My Third Task"),
-    TodoItem(3, "My Forth Task"),
-    TodoItem(4, "My Fifth Task"),
-    TodoItem(5, "My Sixth Task"),
-    TodoItem(6, "My Seventh Task"),
-    TodoItem(7, "My Eighth Task"),
-    TodoItem(8, "My Ninth Task"),
-    TodoItem(9, "My Tenth Task"),
-    TodoItem(10, "My Eleventh Task"),
-    TodoItem(11, "My Twelfth Task"),
-    TodoItem(12, "My Thirteen Task"),
-    TodoItem(13, "My Fourteen Task"),
-    TodoItem(14, "My Fifteen Task"),
-    TodoItem(15, "My Sixteen Task"),
-    TodoItem(16, "My Seventeenth Task"),
-    TodoItem(17, "My Eighteenth Task"),
-    TodoItem(18, "My Nineteenth Task"),
-    TodoItem(19, "My Twentieth Task"),
-)
-
 @Composable
-fun Greeting(name: String) {
-    val todoListState = remember { todoList }
+fun MainTodoView(viewModel: MainViewModel) {
+    val todoListState = viewModel.todoListFlow.collectAsState()
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        var popupControl by remember { mutableStateOf(false) }
-        Button(onClick = { popupControl = true }) {
-            Text("Add New Record")
-        }
-        if (popupControl) {
-            Popup(
-                popupPositionProvider = WindowCenterOffsetPositionProvider(),
-                onDismissRequest = { popupControl = false }
-            ) {
-                AddRecord { popupControl = false }
-            }
+        Button(onClick = { viewModel.generateRandomTodo() }) {
+            Text("Randomly Generate Todo")
         }
         LazyColumn(modifier = Modifier.fillMaxHeight()) {
-            items(items = todoListState, itemContent = { item ->
+            items(items = todoListState.value, itemContent = { item ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -87,21 +56,12 @@ fun Greeting(name: String) {
                     Checkbox(
                         checked = item.urgent,
                         onCheckedChange = {
-                            val index = todoListState.indexOf(item)
-                            todoListState[index] = todoListState[index].copy(urgent = it)
-                            Log.d("Track", "${todoList.toList()}")
+                            val index = todoListState.value.indexOf(item)
+                            viewModel.setUrgent(index, it)
                         }
                     )
                 }
             })
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyComposeTodoTheme {
-        Greeting("Android")
     }
 }
