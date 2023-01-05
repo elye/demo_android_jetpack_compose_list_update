@@ -32,36 +32,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun MainTodoView(viewModel: MainViewModel) {
-    val todoListState = viewModel.todoListFlow.collectAsState()
-
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(onClick = { viewModel.generateRandomTodo() }) {
-            Text("Randomly Generate Todo")
-        }
-        LazyColumn(modifier = Modifier.fillMaxHeight()) {
-            items(items = todoListState.value, itemContent = { item ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(8.dp),
-                        text = item.title
-                    )
-                    Checkbox(
-                        checked = item.urgent,
-                        onCheckedChange = {
-                            val index = todoListState.value.indexOf(item)
-                            viewModel.setUrgent(index, it)
-                        }
-                    )
-                }
-            })
-        }
-    }
-}

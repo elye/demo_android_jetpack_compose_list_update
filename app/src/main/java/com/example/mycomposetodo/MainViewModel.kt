@@ -55,4 +55,8 @@ class MainViewModel : ViewModel() {
         }
         return sb.toString()
     }
+
+    fun addRecord(titleText: String, urgency: Boolean) {
+        todoList.add(TodoItem(todoList.size, titleText, urgency))
+    }
 }
