@@ -61,7 +61,8 @@ class MainViewModel : ViewModel() {
         todoList.add(TodoItem(todoList.last().id + 1, titleText, urgency))
     }
 
-    fun removeRecord(index: Int) {
+    fun removeRecord(todoItem: TodoItem) {
+        val index = todoList.indexOf(todoItem)
         todoList.remove(todoList[index])
     }
 }
