@@ -1,6 +1,5 @@
 package com.example.mycomposetodo
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +42,6 @@ class MainViewModel : ViewModel() {
         val mutableTodoList = mutableStateListOf<TodoItem>()
         (0..numberOfTodo).forEach {
             val todoItem = TodoItem(it, "Item $it: ${randomWord()}", Random.nextBoolean())
-            Log.d("Track", "Created $todoItem")
             mutableTodoList.add(todoItem)
         }
         todoList = mutableTodoList
