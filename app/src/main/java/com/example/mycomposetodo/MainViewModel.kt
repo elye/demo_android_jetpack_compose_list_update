@@ -1,5 +1,6 @@
 package com.example.mycomposetodo
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,9 @@ class MainViewModel : ViewModel() {
         val numberOfTodo = (10..20).random()
         val mutableTodoList = mutableStateListOf<TodoItem>()
         (0..numberOfTodo).forEach {
-            mutableTodoList.add(TodoItem(it, "Item $it: ${randomWord()}", Random.nextBoolean()))
+            val todoItem = TodoItem(it, "Item $it: ${randomWord()}", Random.nextBoolean())
+            Log.d("Track", "Created $todoItem")
+            mutableTodoList.add(todoItem)
         }
         todoList = mutableTodoList
         _todoListFlow.value = mutableTodoList
@@ -57,6 +60,10 @@ class MainViewModel : ViewModel() {
     }
 
     fun addRecord(titleText: String, urgency: Boolean) {
-        todoList.add(TodoItem(todoList.size, titleText, urgency))
+        todoList.add(TodoItem(todoList.last().id + 1, titleText, urgency))
+    }
+
+    fun removeRecord(index: Int) {
+        todoList.remove(todoList[index])
     }
 }
