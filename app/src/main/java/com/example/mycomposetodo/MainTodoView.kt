@@ -64,8 +64,8 @@ fun MainTodoView(viewModel: MainViewModel) {
                         confirmStateChange = {
                             if (it == DismissValue.DismissedToStart || it == DismissValue.DismissedToEnd) {
                                 viewModel.removeRecord(currentItem)
-                            }
-                            true
+                                true
+                            } else false
                         }
                     )
 
@@ -86,8 +86,10 @@ fun MainTodoView(viewModel: MainViewModel) {
                         },
                         dismissContent = {
                             TodoItemRow(item, todoListState, viewModel)
-                        })
-                })
+                        }
+                    )
+                }
+            )
         }
     }
 }
