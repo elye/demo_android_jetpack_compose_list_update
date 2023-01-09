@@ -1,6 +1,5 @@
 package com.example.mycomposetodo
 
-import android.support.v4.os.IResultReceiver.Default
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -69,6 +68,11 @@ fun MainTodoView(viewModel: MainViewModel) {
                             } else false
                         }
                     )
+
+                    if (dismissState.isDismissed(DismissDirection.EndToStart) ||
+                        dismissState.isDismissed(DismissDirection.StartToEnd)){
+                        viewModel.removeRecord(item)
+                    }
 
                     SwipeToDismiss(
                         state = dismissState,
