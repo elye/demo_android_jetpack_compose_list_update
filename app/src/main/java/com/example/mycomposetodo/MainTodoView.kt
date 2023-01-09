@@ -1,5 +1,6 @@
 package com.example.mycomposetodo
 
+import android.support.v4.os.IResultReceiver.Default
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -79,7 +80,9 @@ fun MainTodoView(viewModel: MainViewModel) {
                             DismissDirection.EndToStart
                         ),
                         dismissThresholds = { direction ->
-                            FractionalThreshold(if (direction == DismissDirection.StartToEnd) 0.25f else 0.4f)
+                            FractionalThreshold(
+                                if (direction == DismissDirection.StartToEnd) 0.66f else 0.50f
+                            )
                         },
                         background = {
                             SwipeBackground(dismissState)
